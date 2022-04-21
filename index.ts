@@ -21,11 +21,6 @@ const checkPopulation = (response: Array<TCountry>) => {
   oldData.filter((el: TCountry) => response.find((elResponse: TCountry) => elResponse.name === el.name && elResponse.population !== el.population)).forEach((el: TCountry) => console.log(el.name));
 };
 
-// const fetchData = async () => {
-//   const response = await fetch(`https://restcountries.com/v2/all`);
-//   console.log(response.json());
-// };
-
 const restCountries = (): void => {
   fetch(`https://restcountries.com/v2/all`)
     .then((response: Response) => response.json())
@@ -46,5 +41,4 @@ const main = (): void => {
   }
 };
 
-// fetchData();
 main();
