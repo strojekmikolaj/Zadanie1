@@ -15,10 +15,10 @@ type TCountry = {
   population: number;
 };
 
-const checkPopulation = (response: Array<TCountry>) => {
+const checkPopulation = (newData: Array<TCountry>) => {
   const oldData: Array<TCountry> = JSON.parse(localStorage.getItem('countries'));
 
-  oldData.filter((el: TCountry) => response.find((elResponse: TCountry) => elResponse.name === el.name && elResponse.population !== el.population)).forEach((el: TCountry) => console.log(el.name));
+  oldData.filter((el: TCountry) => newData.find((elNewData: TCountry) => elNewData.name === el.name && elNewData.population !== el.population)).forEach((el: TCountry) => console.log(el.name));
 };
 
 const restCountries = (): void => {
@@ -36,7 +36,8 @@ const restCountries = (): void => {
 const main = (): void => {
   const currentDate: number = new Date().getTime();
   const fetchDate: number = parseInt(localStorage.getItem('date'));
-  if (localStorage.getItem('countries') == null || (fetchDate + 86400000) * 7 < currentDate) {
+  const sevenDays: number = 604_800_000;
+  if (localStorage.getItem('countries') == null || currentDate - fetchDate > sevenDays) {
     restCountries();
   }
 };

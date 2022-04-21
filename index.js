@@ -13,10 +13,6 @@ var checkPopulation = function (response) {
     var oldData = JSON.parse(localStorage.getItem('countries'));
     oldData.filter(function (el) { return response.find(function (elResponse) { return elResponse.name === el.name && elResponse.population !== el.population; }); }).forEach(function (el) { return console.log(el.name); });
 };
-// const fetchData = async () => {
-//   const response = await fetch(`https://restcountries.com/v2/all`);
-//   console.log(response.json());
-// };
 var restCountries = function () {
     fetch("https://restcountries.com/v2/all")
         .then(function (response) { return response.json(); })
@@ -35,5 +31,4 @@ var main = function () {
         restCountries();
     }
 };
-// fetchData();
 main();
