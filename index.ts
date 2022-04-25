@@ -19,14 +19,15 @@ type TCountry = {
   population: number;
 };
 
-const checkPopulation = (newData: Array<TCountry>, oldData: Array<TCountry>) => {
+export const checkPopulation = (newData: Array<TCountry>, oldData: Array<TCountry>) => {
   //oldData.filter((elOld: TCountry) => newData.find((elNew: TCountry) => elNew.name === elOld.name && elNew.population !== elOld.population)).forEach((el: TCountry) => console.log(el.name));
-
+  let array: Array<TCountry> = [];
   newData.forEach((item, index) => {
     if (newData[index].name === oldData[index].name && newData[index].population !== oldData[index].population) {
-      console.log(newData[index].name);
+      array.push(newData[index]);
     }
   });
+  return array;
 };
 
 const fetchCountries = (): void => {

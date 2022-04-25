@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Ściągnij wszystkie możliwe dane państw z pomocą API: https://restcountries.com/v2/all. W dalszej części kursu będą one nazywane Tablicą Państw (TP).
  * Ściągnięte dane zapisz w sposób, który pozwoli na ich ponowne wykorzystanie po zamknięciu i ponownym otwarciu przeglądarki,
@@ -9,26 +10,28 @@
  * Kod powinien posiadać pełen zestaw testów (Jest).
  * Kod może posiadać komentarze.
  */
+exports.__esModule = true;
+exports.checkPopulation = void 0;
 var config = {
     sevenDays: 604800000
 };
 var checkPopulation = function (newData, oldData) {
     //oldData.filter((elOld: TCountry) => newData.find((elNew: TCountry) => elNew.name === elOld.name && elNew.population !== elOld.population)).forEach((el: TCountry) => console.log(el.name));
-    console.log(newData);
-    console.log(oldData);
+    var array = [];
     newData.forEach(function (item, index) {
         if (newData[index].name === oldData[index].name && newData[index].population !== oldData[index].population) {
-            console.log(newData[index].name);
+            array.push(newData[index]);
         }
     });
+    return array;
 };
+exports.checkPopulation = checkPopulation;
 var fetchCountries = function () {
     fetch("https://restcountries.com/v2/all")
         .then(function (response) { return response.json(); })
         .then(function (response) {
-        console.log('funkcja dziala');
         if (localStorage.getItem('countries') !== null) {
-            checkPopulation(response, JSON.parse(localStorage.getItem('countries')));
+            (0, exports.checkPopulation)(response, JSON.parse(localStorage.getItem('countries')));
         }
         localStorage.setItem('countries', JSON.stringify(response));
         localStorage.setItem('date', new Date().getTime().toString());
