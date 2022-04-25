@@ -10,24 +10,33 @@
  * Kod może posiadać komentarze.
  */
 
+const config = {
+  sevenDays: 604_800_000,
+};
+
 type TCountry = {
   name: string;
   population: number;
 };
 
-const checkPopulation = (newData: Array<TCountry>) => {
-  const oldData: Array<TCountry> = JSON.parse(localStorage.getItem('countries'));
+const checkPopulation = (newData: Array<TCountry>, oldData: Array<TCountry>) => {
+  //oldData.filter((elOld: TCountry) => newData.find((elNew: TCountry) => elNew.name === elOld.name && elNew.population !== elOld.population)).forEach((el: TCountry) => console.log(el.name));
 
-  oldData.filter((el: TCountry) => newData.find((elNewData: TCountry) => elNewData.name === el.name && elNewData.population !== el.population)).forEach((el: TCountry) => console.log(el.name));
+  newData.forEach((item, index) => {
+    if (newData[index].name === oldData[index].name && newData[index].population !== oldData[index].population) {
+      console.log(newData[index].name);
+    }
+  });
 };
 
-const restCountries = (): void => {
+const fetchCountries = (): void => {
   fetch(`https://restcountries.com/v2/all`)
     .then((response: Response) => response.json())
     .then((response: Array<TCountry>) => {
-      if (localStorage.getItem('countries') != null) {
-        checkPopulation(response);
+      if (localStorage.getItem('countries') !== null) {
+        checkPopulation(response, JSON.parse(localStorage.getItem('countries')));
       }
+
       localStorage.setItem('countries', JSON.stringify(response));
       localStorage.setItem('date', new Date().getTime().toString());
     });
@@ -36,9 +45,8 @@ const restCountries = (): void => {
 const main = (): void => {
   const currentDate: number = new Date().getTime();
   const fetchDate: number = parseInt(localStorage.getItem('date'));
-  const sevenDays: number = 604_800_000;
-  if (localStorage.getItem('countries') == null || currentDate - fetchDate > sevenDays) {
-    restCountries();
+  if (localStorage.getItem('countries') === null || currentDate - fetchDate > config.sevenDays) {
+    fetchCountries();
   }
 };
 
