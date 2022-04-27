@@ -15,10 +15,5 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es7", "es2019", "dom"],
-    "paths": {
-      "Components/*": ["src/components/*"],
-      "Entity/*": ["src/models/*"],
-      "*": ["types/*"]
-    }
   }
 }

@@ -12,6 +12,7 @@
 
 const config = {
   sevenDays: 604_800_000,
+  API_URL: `https://restcountries.com/v2/all`,
 };
 
 type TCountry = {
@@ -27,15 +28,16 @@ export const checkPopulation = (newData: Array<TCountry>, oldData: Array<TCountr
       array.push(newData[index]);
     }
   });
+  console.log([...array]);
   return array;
 };
 
-const fetchCountries = (): void => {
-  fetch(`https://restcountries.com/v2/all`)
+const fetchCountries = (localStorageData: string): void => {
+  fetch(config.API_URL)
     .then((response: Response) => response.json())
     .then((response: Array<TCountry>) => {
-      if (localStorage.getItem('countries') !== null) {
-        checkPopulation(response, JSON.parse(localStorage.getItem('countries')));
+      if (localStorageData !== null) {
+        checkPopulation(response, JSON.parse(localStorageData));
       }
 
       localStorage.setItem('countries', JSON.stringify(response));
@@ -46,8 +48,9 @@ const fetchCountries = (): void => {
 const main = (): void => {
   const currentDate: number = new Date().getTime();
   const fetchDate: number = parseInt(localStorage.getItem('date'));
-  if (localStorage.getItem('countries') === null || currentDate - fetchDate > config.sevenDays) {
-    fetchCountries();
+  const localStorageData: string = localStorage.getItem('countries');
+  if (localStorageData === null || currentDate - fetchDate > config.sevenDays) {
+    fetchCountries(localStorageData);
   }
 };
 
